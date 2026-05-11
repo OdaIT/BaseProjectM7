@@ -2,8 +2,15 @@ import express from 'express';
 // Esta é a nova lib oficial (SDK Unificada v3)
 import { GoogleGenAI } from "@google/genai";
 import 'dotenv/config';
+import { setCreateTask } from './funtionsdefinitions.js';
 
 const app = express();
+
+const config = {
+  tools: [{
+    functionDeclarations: [setCreateTask]
+  }]
+};
 
 // Na v3, a inicialização é feita desta forma
 const ai = new GoogleGenAI({
@@ -18,13 +25,14 @@ app.get('/', async (req, res) => {
   res.setHeader('X-Accel-Buffering', 'no'); 
 
   try {
-    const prompt = req.query.prompt || "Olá, Gemini 3!, Que horas são?";
+    const prompt = req.query.prompt || "Tenho que entregar um trabalho de GenAI até sexta feira sem falta.";
 
     // 2. Na v3, usamos ai.models.generateContentStream
     // O modelo é passado como o primeiro argumento da configuração
     const result = await ai.models.generateContentStream({
       model: "gemini-3.1-flash-lite-preview",
-      contents: [{ role: "user", parts: [{ text: prompt }] }]
+      contents: [{ role: "user", parts: [{ text: prompt }] }],
+      config: config
     });
 
     // 3. Iteração sobre a stream
