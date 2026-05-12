@@ -2,7 +2,11 @@ import express from 'express';
 // Esta é a nova lib oficial (SDK Unificada v3)
 import { GoogleGenAI } from "@google/genai";
 import 'dotenv/config';
-import { setCreateTask } from './funtionsdefinitions.js';
+import { setCreateTask } from './tools/createTask.js';
+import { setRefineTask } from './tools/refineTask.js';
+import { setDeleteTask } from './tools/deleteTask.js';
+import { setSummarizeTask } from './tools/summarizeTask.js';
+import { setSuggestTag } from './tools/suggestTag.js';
 
 const app = express();
 
