@@ -7,6 +7,10 @@ export const setRefineTask = {
   parameters: {
     type: Type.OBJECT,
     properties: {
+      task_id: {
+      type: Type.NUMBER,
+      description: "ID of the task to refine.",
+      },
       title: {
         type: Type.STRING,
         description:
@@ -24,9 +28,10 @@ export const setRefineTask = {
           "Defines the priority which the task needs to be solved. Can be `low`, `medium` `high` or `urgent`.",
       },
       tags: {
-        type: Type.STRING,
-        description:
-          "One word tag that describes the type of task.",
+      type: Type.ARRAY,
+      items: { type: Type.STRING },
+      description:
+          "List of short tags describing the task (example: ['bug', 'frontend']).",
       },
     },
     required: ["title", "task_description", "priority"],
@@ -40,8 +45,9 @@ export const setRefineTask = {
  * @param {string} tags - one word that describes the type of task
  * @return {Object} A dictionary containing the task.
  */
-function setRefineTaskValues(title, task_description, priority, tags) {
+function setRefineTaskValues(task_id, title, task_description, priority, tags) {
   return {
+    task_id: task_id,
     title: title,
     description: task_description,
     priority: priority,

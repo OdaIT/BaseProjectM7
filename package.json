@@ -2,13 +2,13 @@
   "dependencies": {
     "@google/genai": "^2.0.1",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "mysql2": "^3.22.3"
   },
   "name": "m7-03-utils",
   "version": "1.0.0",
   "description": "",
   "main": "stream_api.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -24,9 +24,10 @@ export const setCreateTask = {
           "Defines the priority which the task needs to be solved. Can be `low`, `medium` `high` or `urgent`.",
       },
       tags: {
-        type: Type.STRING,
+        type: Type.ARRAY,
+        items: { type: Type.STRING },
         description:
-          "One word tag that describes the type of task.",
+            "List of short tags describing the task (example: ['bug', 'frontend']).",
       },
     },
     required: ["title", "task_description", "priority"],
