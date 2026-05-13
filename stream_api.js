@@ -12,7 +12,7 @@ const app = express();
 
 const config = {
   tools: [{
-    functionDeclarations: [setCreateTask]
+    functionDeclarations: [setCreateTask, setRefineTask, setDeleteTask, setSummarizeTask, setSuggestTag]
   }]
 };
 
@@ -23,32 +23,28 @@ const ai = new GoogleGenAI({
 
 app.get('/', async (req, res) => {
   // 1. Headers fundamentais para Streaming (SSE)
-  res.setHeader('Content-Type', 'text/event-stream; charset=utf-8');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.setHeader('Connection', 'keep-alive');
-  res.setHeader('X-Accel-Buffering', 'no'); 
+  res.setHeader('Content-Type', 'application/json');
 
   try {
     const prompt = req.query.prompt || "Tenho que entregar um trabalho de GenAI até sexta feira sem falta.";
 
     // 2. Na v3, usamos ai.models.generateContentStream
     // O modelo é passado como o primeiro argumento da configuração
-    const result = await ai.models.generateContentStream({
-      model: "gemini-3.1-flash-lite-preview",
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      config: config
-    });
-
-    // 3. Iteração sobre a stream
-    // A v3 retorna um iterador assíncrono diretamente no objeto
-    for await (const chunk of result) {
-      // Na nova SDK, o acesso ao texto é direto através de propriedades ou do método text()
-      const chunkText = chunk.text;
-      
-      if (chunkText) {
-        res.write(chunkText);
+  const chat = ai.chats.create({
+    model: 'gemini-3.1-flash-lite-preview',
+    config: {
+      tools: [{ functionDeclarations: [setCreateTask, setRefineTask, setDeleteTask, setSummarizeTask, setSuggestTag] }],
+      toolConfig: {
+        functionCallingConfig: {
+          mode: 'auto'  // Let LLM decide which tool to call
+        }
       }
     }
+  });
+
+  const response = await chat.sendMessage({
+    message: prompt
+  });
 
     res.write('data: \n [DONE]\n\n');
     res.end();

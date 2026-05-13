@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Task Manager</title>
+
+</head>
+<body>
+    <div class="container">
+        <h1>AI Task Manager</h1>
+        <p class="subtitle">Tell me what you need - I will create, edit, or refine your task</p>
+
+        <div class="input-group">
+            <label for="prompt">Your Prompt:</label>
+            <textarea id="prompt" placeholder="e.g., 'repair the computer, user without computer'" autofocus></textarea>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-submit" id="submitBtn" onclick="submitPrompt()">
+                Send to AI
+            </button>
+        </div>
+    </div>
+</body>
+</html>
