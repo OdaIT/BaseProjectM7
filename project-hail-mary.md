@@ -119,17 +119,38 @@ Remember to import and add `setCompleteTask` to the tools array in `stream_api.j
 
 ---
 
-### Step 2 — Rewrite `stream_api.js`
+### Step 2 — Restructure into `routes/` + update `stream_api.js`
 
-**Change endpoint:** GET `/?prompt=` → POST `/chat` with JSON body `{ message, history }`.
-
-**Add middleware:**
-```js
-app.use(express.json());
-app.use(express.static('public'));   // serves main.js + style.css
+**File structure:**
+```
+stream_api.js        ← app setup only (middleware, routes, listen)
+routes/
+  chat.js            ← POST /chat handler, Gemini loop, executeTool, sendSSE
+db.js                ← mysql2 pool (already done)
 ```
 
-**Tool execution loop (core logic):**
+**`stream_api.js` becomes thin — only:**
+```js
+import express from 'express';
+import 'dotenv/config';
+import chatRouter from './routes/chat.js';
+
+const app = express();
+app.use(express.json());
+app.use(express.static('public'));
+app.use('/chat', chatRouter);
+app.listen(process.env.PORT, () => console.log(`Server on port ${process.env.PORT}`));
+```
+
+**`routes/chat.js`** — contains everything:
+- All tool imports (`setCreateTask`, `setRefineTask`, ..., `setCompleteTask`)
+- `pool` import from `db.js`
+- `sendSSE(res, payload)` helper
+- `upsertTag(tagName)` helper
+- `executeTool(name, args)` — async, does real DB queries
+- The `router.post('/', async (req, res) => { ... })` handler
+
+**Tool execution loop inside the route handler:**
 ```
 POST /chat:
   1. Set SSE headers
@@ -138,7 +159,7 @@ POST /chat:
   4. Tool loop (max 5 iterations):
        while response.functionCalls?.length:
          for each fn in response.functionCalls:
-           result = executeTool(fn.name, fn.args)
+           result = await executeTool(fn.name, fn.args)
            sendSSE(res, { type: "tool_call", tool: fn.name, data: result })
          response = await chat.sendMessage({ message: functionResponseParts })
   5. sendSSE(res, { type: "text", content: response.text })
@@ -308,7 +329,8 @@ curl -X POST http://localhost:3000/chat \
 | File | Action |
 |---|---|
 | `db.js` | Create new — mysql2 pool |
-| `stream_api.js` | Rewrite — POST endpoint, async executeTool, DB queries |
+| `stream_api.js` | Slim down — middleware + route mounting only |
+| `routes/chat.js` | Create new — Gemini loop, executeTool, DB queries |
 | `index.html` | Rewrite — two-panel layout |
 | `tools/createTask.js` | Change `tags` to `Type.ARRAY` |
 | `tools/refineTask.js` | Change `tags` to `Type.ARRAY`, add `task_id` |

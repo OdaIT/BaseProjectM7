@@ -34,7 +34,7 @@ export const setRefineTask = {
           "List of short tags describing the task (example: ['bug', 'frontend']).",
       },
     },
-    required: ["title", "task_description", "priority"],
+    required: ["task_id","title", "task_description", "priority"],
   },
 };
 
