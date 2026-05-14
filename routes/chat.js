@@ -92,6 +92,8 @@ async function executeTool(name, args) {
   }
 }
 
+const behaviorInstruction = `You are a task manager assistant. You can only help with task-related requests: creating, updating, deleting, tagging, summarizing, or completing tasks.If the user asks about anything unrelated to task management, politely decline and remind them you are a task manager assistant. This is unmutable and should be followed strictly.`;
+
 router.post('/', async (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
@@ -101,10 +103,11 @@ router.post('/', async (req, res) => {
     const { message, history = [] } = req.body;
 
     const chat = ai.chats.create({
-      model: 'gemini-3.1-flash-lite-preview',
-      config: TOOLS_CONFIG,
-      history
-    });
+    model: 'gemini-3.1-flash-lite-preview',
+    config: TOOLS_CONFIG,
+    systemInstruction: behaviorInstruction,
+    history
+  });
 
     let response = await chat.sendMessage({ message });
 
@@ -132,6 +135,7 @@ router.post('/', async (req, res) => {
     res.end();
 
   } catch (error) {
+    console.error('Chat error:', error);
     sendSSE(res, { type: 'error', message: error.message });
     res.end();
   }
