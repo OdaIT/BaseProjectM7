@@ -179,6 +179,7 @@ function renderTasks() {
       const dir = state.sort.direction === 'asc' ? 1 : -1;
       if (state.sort.field === 'title') return dir * a.title.localeCompare(b.title);
       if (state.sort.field === 'priority') return dir * (priorityOrder[a.priority] - priorityOrder[b.priority]);
+      if (state.sort.field === 'id') return dir * (a.id - b.id);
       return 0;
     });
 
