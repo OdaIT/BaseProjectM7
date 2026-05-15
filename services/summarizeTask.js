@@ -1,5 +1,5 @@
 async function summarizeTask(task) {
-  const prompt = `Resume a description se for longa em uma frase simples, objetiva e profissional para facilitar leitura rápida. ${jsonFormat}`
+  const prompt = `Summarize the description if it is long—into a simple, concise, and professional sentence to make it easier to read quickly. Max 200 characters`
 
   try {
     const response = await callGemini(prompt);

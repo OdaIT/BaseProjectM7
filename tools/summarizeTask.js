@@ -3,7 +3,7 @@ import { Type } from "@google/genai";
 // Define a function that the model can call to control smart lights
 export const setSummarizeTask = {
   name: "set_summarize_task_values",
-  description: "Summarizes a long description of a task into a shorter one.",
+  description: "Summarizes a long description of a task into a shorter one.(max 200 characters)",
   parameters: {
     type: Type.OBJECT,
     properties: {

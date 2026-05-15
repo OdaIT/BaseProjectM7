@@ -1,5 +1,7 @@
+import { jsonFormat } from "../zodtojson";
+
 async function refineTask(task) {
-  const prompt = `Melhora a tarefa existente tornando-a mais clara, completa e profissional. ${jsonFormat} `
+  const prompt = `Improve the existing task making it clearer, more complete and professional. ${jsonFormat} `
 
   try {
     const response = await callGemini(prompt);

@@ -10,7 +10,7 @@ export const setDeleteTask = {
       task_id: {
         type: Type.NUMBER,
         description:
-          "Id of the task.",
+          "Id of the task. Only delete individual tasks.",
       },
     },
     required: ["task_id"],

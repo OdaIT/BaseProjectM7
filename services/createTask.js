@@ -1,7 +1,9 @@
-async function createTaskFromText(text) {
-  const prompt = `Transforma o seguinte texto em uma tarefa estruturada no formato JSON. Responde apenas com o JSON, sem texto adicional.
+import { jsonFormat } from "../zodtojson";
 
-Texto: "${text}, ${jsonFormat}" `;
+async function createTaskFromText(text) {
+  const prompt = `Transform the following text into a structured task in JSON format. Reply only with the JSON, no additional text.
+
+Text: "${text}, ${jsonFormat}" `;
 
   try {
     const response = await callGemini(prompt);

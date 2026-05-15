@@ -14,12 +14,12 @@ export const setRefineTask = {
       title: {
         type: Type.STRING,
         description:
-          "Short and professional title for the task.",
+          "Short and professional title for the task.(max 50 characters)",
       },
       task_description: {
         type: Type.STRING,
         description:
-          "Objective and professional description of the task.",
+          "Objective and professional description of the task.(max 200 characters)",
       },
       priority: {
         type: Type.STRING,
@@ -31,7 +31,7 @@ export const setRefineTask = {
       type: Type.ARRAY,
       items: { type: Type.STRING },
       description:
-          "List of short tags describing the task (example: ['bug', 'frontend']).",
+          "List of short tags describing the task (example: ['bug', 'frontend']).(max 25 characters)",
       },
     },
     required: ["task_id","title", "task_description", "priority"],

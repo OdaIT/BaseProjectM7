@@ -8,6 +8,3 @@ export const pool = mysql.createPool({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 });
-
-/*const [rows] = await pool.query('SELECT 1 + 1 AS result');
-console.log('DB connected:', rows[0].result); // should print 2*/

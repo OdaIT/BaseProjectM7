@@ -10,12 +10,12 @@ export const setCreateTask = {
       title: {
         type: Type.STRING,
         description:
-          "Short title for the task.",
+          "Short title for the task.(max 50 characters)",
       },
       task_description: {
         type: Type.STRING,
         description:
-          "Description of the task.",
+          "Description of the task.(NEVER EXCEED 200 characters)",
       },
       priority: {
         type: Type.STRING,
@@ -27,7 +27,7 @@ export const setCreateTask = {
         type: Type.ARRAY,
         items: { type: Type.STRING },
         description:
-            "List of short tags describing the task (example: ['bug', 'frontend']).",
+            "List of short tags describing the task (example: ['bug', 'frontend']).(max 25 characters)",
       },
     },
     required: ["title", "task_description", "priority"],

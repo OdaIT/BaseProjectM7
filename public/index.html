@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Task Manager</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>AI Task Manager</h1>
+  </header>
+  <main>
+    <div class="top-panels">
+      <div class="panel panel--input">
+        <label for="userInput">Your message</label>
+        <textarea id="userInput" maxlength="300" placeholder="e.g. Create a task to fix the login bug, urgent priority..."></textarea>
+        <button id="sendBtn">Send</button>
+      </div>
+      <div class="panel panel--response">
+        <label>AI Response</label>
+        <div id="responseBox">Send a message to get started.</div>
+      </div>
+    </div>
+    <section id="taskBoard" class="task-board"></section>
+  </main>
+  <script src="main.js" defer></script>
+</body>
+</html>

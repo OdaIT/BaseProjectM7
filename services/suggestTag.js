@@ -1,5 +1,7 @@
+import { jsonFormat } from "../zodtojson";
+
 async function suggestTags(task) {
-  const prompt = `Analisa a tarefa e sugere tags relevantes. ${jsonFormat}`
+  const prompt = `Analyze the task and suggest relevant tags. ${jsonFormat}`
 
   try {
     const response = await callGemini(prompt);

@@ -3,7 +3,7 @@ import { Type } from "@google/genai";
 // Define a function that the model can call to control smart lights
 export const setSuggestTag = {
   name: "set_suggest_tag_values",
-  description: "Suggests a tag for a task based on its description.",
+  description: "Suggests a tag for a task based on its description.(max 20 characters)",
   parameters: {
     type: Type.OBJECT,
     properties: {
