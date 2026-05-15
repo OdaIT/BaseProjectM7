@@ -21,7 +21,7 @@ export const setCreateTask = {
         type: Type.STRING,
         enum: ["low", "medium", "high", "urgent"],
         description:
-          "Defines the priority which the task needs to be solved. Can be `low`, `medium` `high` or `urgent`.",
+          "Defines the priority which the task needs to be solved. Can be `low`, `medium` `high` or `urgent`. Example: website down is urgent, a flat tyre is urgent, cooking is medium priority and a change of color on the UI is low priority",
       },
       tags: {
         type: Type.ARRAY,
@@ -30,7 +30,7 @@ export const setCreateTask = {
             "List of short tags describing the task (example: ['bug', 'frontend']).(max 25 characters)",
       },
     },
-    required: ["title", "task_description", "priority"],
+    required: ["title", "task_description", "priority", "tags"],
   },
 };
 
