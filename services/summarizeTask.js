@@ -8,9 +8,8 @@ async function summarizeTask(task) {
     return JSON.parse(cleanedResponse);
   } catch (error) {
     console.error('Error in summarizeTask:', error);
-    // Fallback to simple processing
     return {
-      title: "Description sumarizada via IA",
+      title: "Description summarized via IA",
       description: "text",
       priority: "medium",
       tags: ["ia"]

@@ -10,7 +10,7 @@ export const setDeleteTask = {
       task_id: {
         type: Type.NUMBER,
         description:
-          "Id of the task. Only delete individual tasks.",
+          "Id of the task. RULE: Only delete tasks if id is provided by the user.",
       },
     },
     required: ["task_id"],
@@ -18,7 +18,7 @@ export const setDeleteTask = {
 };
 
 /**
- * @param {number} task_id - Id of the task to delete
+ * @param {number} task_id - Id of the task to delete. RULE: Only delete individual tasks
  * @return {Object} A dictionary containing the deleted task.
  */
 function setDeleteTaskValues(task_id) {

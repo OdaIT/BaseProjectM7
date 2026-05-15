@@ -1,4 +1,4 @@
-const state = { tasks: [], filter: 'all', filterTag: '', isLoading: false };
+const state = { tasks: [], filter: 'all', filterTag: '', sort: { field: null, direction: 'asc' }, skipNextText: false, isLoading: false };
 let geminiHistory = [];
 
 let userInput, sendBtn, responseBox, taskBoard;
@@ -42,15 +42,15 @@ async function handleSend() {
 
   geminiHistory.push({ role: 'user', parts: [{ text: message }] });
 
-  await streamChat(context + message);
+  await streamChat(context + message, message);
 }
 
-async function streamChat(message) {
+async function streamChat(message, rawMessage) {
   try {
     const res = await fetch('/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message, history: geminiHistory })
+      body: JSON.stringify({ message, rawMessage: rawMessage ?? message, history: geminiHistory })
     });
 
     const reader = res.body.getReader();
@@ -86,8 +86,12 @@ function handleSSEEvent(event) {
     applyToolToState(event.tool, event.data);
     renderTasks();
   } else if (event.type === 'text') {
-    responseBox.textContent = event.content;
-    geminiHistory.push({ role: 'model', parts: [{ text: event.content }] });
+    if (state.skipNextText) {
+      state.skipNextText = false;
+    } else {
+      responseBox.textContent = event.content;
+      geminiHistory.push({ role: 'model', parts: [{ text: event.content }] });
+    }
   } else if (event.type === 'error') {
     responseBox.textContent = 'Error: ' + event.message;
   }
@@ -141,16 +145,42 @@ function applyToolToState(toolName, data) {
     case 'set_filter_by_tag_values':
       state.filterTag = data.tag;
       break;
+
+    case 'set_sort_tasks_values':
+      state.sort = { field: data.field, direction: data.direction };
+      break;
+
+    case 'get_history_values': {
+      if (!data.history?.length) {
+        responseBox.textContent = 'No history found.';
+      } else {
+        responseBox.textContent = data.history
+          .map(m => `[${m.role.toUpperCase()}]: ${m.content}`)
+          .join('\n\n');
+      }
+      state.skipNextText = true;
+      break;
+    }
   }
 }
 
 function renderTasks() {
   taskBoard.innerHTML = '';
-  const visible = state.tasks.filter(t => {
-    const matchesStatus = state.filter === 'all' ? true : state.filter === 'completed' ? t.completed : !t.completed;
-    const matchesTag = !state.filterTag || t.tags.includes(state.filterTag);
-    return matchesStatus && matchesTag;
-  });
+  const priorityOrder = { urgent: 4, high: 3, medium: 2, low: 1 };
+
+  const visible = state.tasks
+    .filter(t => {
+      const matchesStatus = state.filter === 'all' ? true : state.filter === 'completed' ? t.completed : !t.completed;
+      const matchesTag = !state.filterTag || t.tags.includes(state.filterTag);
+      return matchesStatus && matchesTag;
+    })
+    .sort((a, b) => {
+      if (!state.sort.field) return 0;
+      const dir = state.sort.direction === 'asc' ? 1 : -1;
+      if (state.sort.field === 'title') return dir * a.title.localeCompare(b.title);
+      if (state.sort.field === 'priority') return dir * (priorityOrder[a.priority] - priorityOrder[b.priority]);
+      return 0;
+    });
 
   if (!visible.length) {
     const p = document.createElement('p');

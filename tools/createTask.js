@@ -15,7 +15,7 @@ export const setCreateTask = {
       task_description: {
         type: Type.STRING,
         description:
-          "Description of the task.(NEVER EXCEED 200 characters)",
+          "A detailed summary of what needs to be done.(NEVER EXCEED 200 characters)",
       },
       priority: {
         type: Type.STRING,

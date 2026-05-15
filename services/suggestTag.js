@@ -10,7 +10,6 @@ async function suggestTags(task) {
     return JSON.parse(cleanedResponse);
   } catch (error) {
     console.error('Error in suggestTags:', error);
-    // Fallback to simple processing
     return {
       title: "Suggests tags via IA",
       description: "text",

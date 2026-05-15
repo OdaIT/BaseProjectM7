@@ -10,9 +10,8 @@ async function refineTask(task) {
     return JSON.parse(cleanedResponse);
   } catch (error) {
     console.error('Error in refineTask:', error);
-    // Fallback to simple processing
     return {
-      title: "Tarefa refinada via IA",
+      title: "Task refined via IA",
       description: "text",
       priority: "medium",
       tags: ["ia"]

@@ -22,3 +22,10 @@ CREATE TABLE task_tags (
   FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE,
   FOREIGN KEY (tag_id)  REFERENCES tags(id)  ON DELETE CASCADE
 );
+
+CREATE TABLE chat_history (
+  id         INT AUTO_INCREMENT PRIMARY KEY,
+  role       ENUM('user','model') NOT NULL,
+  content    TEXT                 NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

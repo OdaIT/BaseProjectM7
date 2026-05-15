@@ -25,7 +25,6 @@ main {
   gap: 1.5rem;
 }
 
-/* ── Top panels ── */
 .top-panels {
   display: flex;
   flex-direction: column;
@@ -88,7 +87,6 @@ main {
   white-space: pre-wrap;
 }
 
-/* ── Task board ── */
 .task-board {
   display: flex;
   flex-wrap: wrap;
@@ -112,7 +110,7 @@ main {
   gap: .5rem;
   transition: opacity .2s;
 }
-.task-card.completed { opacity: .5; }
+.task-card.completed { opacity: .25; }
 
 .task-card h3 {
   font-size: 1rem;

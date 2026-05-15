@@ -12,9 +12,8 @@ Text: "${text}, ${jsonFormat}" `;
     return JSON.parse(cleanedResponse);
   } catch (error) {
     console.error('Error in createTaskFromText:', error);
-    // Fallback to simple processing
     return {
-      title: "Tarefa criada via IA",
+      title: "Task created via IA",
       description: text,
       priority: "medium",
       tags: ["ia"]
